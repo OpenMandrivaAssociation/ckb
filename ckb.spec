@@ -14,6 +14,7 @@ BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5Script)
 BuildRequires:	pkgconfig(Qt5Test)
 BuildRequires:	qmake5
+BuildRequires:	imagemagick
 
 %description
 Driver for Corsair gaming keyboards and mice.
