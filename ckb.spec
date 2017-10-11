@@ -1,4 +1,4 @@
-%define snapshot 20170823
+%define snapshot 20171011
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
 Version:	0.2.9
@@ -44,6 +44,9 @@ UI for configuring Corsair gaming keyboards and mice
 %prep
 %setup -qn %{name}-next-master
 %apply_patches
+# Workaround for weirdo (ASCII-ish?) comparison that thinks
+# Qt 5.10 is older than 5.2...
+sed -i -e 's|QT_VERSION, 5.2|QT_VERSION, 5.10|' ckb.pro
 ./qmake-auto
 
 %build
