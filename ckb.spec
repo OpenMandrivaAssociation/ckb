@@ -15,6 +15,8 @@ BuildRequires:	pkgconfig(Qt5Script)
 BuildRequires:	pkgconfig(Qt5Test)
 BuildRequires:	qmake5
 BuildRequires:	imagemagick
+# For ckb-mviz
+BuildRequires:	pkgconfig(libpulse) pkgconfig(libpulse-simple)
 
 %description
 Driver for Corsair gaming keyboards and mice.
@@ -38,6 +40,7 @@ UI for configuring Corsair gaming keyboards and mice
 
 %files ui
 %{_bindir}/ckb
+%{_prefix}/lib/ckb-animations
 %{_datadir}/icons/hicolor/*/*/*.png
 %{_datadir}/applications/*.desktop
 
@@ -53,7 +56,7 @@ sed -i -e 's|QT_VERSION, 5.2|QT_VERSION, 5.10|' ckb.pro
 %make
 
 %install
-mkdir -p %{buildroot}%{_sbindir} %{buildroot}%{_bindir} %{buildroot}%{_datadir}/applications %{buildroot}/lib/systemd/system/multi-user.target.wants
+mkdir -p %{buildroot}%{_sbindir} %{buildroot}%{_bindir} %{buildroot}%{_prefix}/lib %{buildroot}%{_datadir}/applications %{buildroot}/lib/systemd/system/multi-user.target.wants
 for x in 512 128 64 32 24 22 16; do
 	mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps
 	convert usr/ckb.png -scale ${x}x${x} %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps/ckb.png
@@ -63,3 +66,4 @@ sed -e 's,/usr/bin,%{_sbindir},g' service/systemd/ckb-daemon.service >%{buildroo
 ln -s ../ckb-daemon.service %{buildroot}/lib/systemd/system/multi-user.target.wants/
 cp -a bin/ckb %{buildroot}%{_bindir}/
 cp -a bin/ckb-daemon %{buildroot}%{_sbindir}/
+cp -a bin/ckb-animations %{buildroot}%{_prefix}/lib
