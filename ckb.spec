@@ -1,4 +1,4 @@
-%define snapshot 20171011
+%define snapshot 20171031
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
 Version:	0.2.9
