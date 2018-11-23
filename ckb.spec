@@ -1,18 +1,19 @@
-%define snapshot 20171031
+%define snapshot 20181123
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
-Version:	0.2.9
+Version:	0.3.2
 Release:	0.%{snapshot}.1
 Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
-Url:		https://github.com/mattanger/ckb-next
-Source0:	https://github.com/mattanger/ckb-next/archive/master.tar.gz
+Url:		https://github.com/ckb-next/ckb-next
+Source0:	https://github.com/ckb-next/ckb-next/archive/master.tar.gz
 BuildRequires:	pkgconfig(Qt5Core)
 BuildRequires:	pkgconfig(Qt5DBus)
 BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5Script)
 BuildRequires:	pkgconfig(Qt5Test)
+BuildRequires:	pkgconfig(quazip)
 BuildRequires:	qmake5
 BuildRequires:	imagemagick
 # For ckb-mviz
@@ -34,36 +35,37 @@ Requires:	%{name} = %{EVRD}
 UI for configuring Corsair gaming keyboards and mice
 
 %files
-%{_sbindir}/ckb-daemon
+%{_bindir}/ckb-next-daemon
 /lib/systemd/system/*.service
 /lib/systemd/system/multi-user.target.wants/*.service
+%{_sysconfdir}/udev/rules.d/99-ckb-daemon.rules
+%{_bindir}/ckb-next-dev-detect
 
 %files ui
-%{_bindir}/ckb
-%{_prefix}/lib/ckb-animations
+%{_bindir}/ckb-next
+%{_prefix}/libexec/ckb-next-animations
 %{_datadir}/icons/hicolor/*/*/*.png
 %{_datadir}/applications/*.desktop
 
 %prep
 %setup -qn %{name}-next-master
 %apply_patches
-# Workaround for weirdo (ASCII-ish?) comparison that thinks
-# Qt 5.10 is older than 5.2...
-sed -i -e 's|QT_VERSION, 5.2|QT_VERSION, 5.10|' ckb.pro
-./qmake-auto
+%cmake_qt5 -G Ninja
 
 %build
-%make
+%ninja_build -C build
 
 %install
+%ninja_install -C build
+
 mkdir -p %{buildroot}%{_sbindir} %{buildroot}%{_bindir} %{buildroot}%{_prefix}/lib %{buildroot}%{_datadir}/applications %{buildroot}/lib/systemd/system/multi-user.target.wants
-for x in 512 128 64 32 24 22 16; do
+for x in 128 64 32 24 22 16; do
 	mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps
-	convert usr/ckb.png -scale ${x}x${x} %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps/ckb.png
+	convert %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/ckb-next.png -scale ${x}x${x} %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps/ckb-next.png
 done
-cp usr/ckb.desktop %{buildroot}%{_datadir}/applications/
-sed -e 's,/usr/bin,%{_sbindir},g' service/systemd/ckb-daemon.service >%{buildroot}/lib/systemd/system/ckb-daemon.service
-ln -s ../ckb-daemon.service %{buildroot}/lib/systemd/system/multi-user.target.wants/
-cp -a bin/ckb %{buildroot}%{_bindir}/
-cp -a bin/ckb-daemon %{buildroot}%{_sbindir}/
-cp -a bin/ckb-animations %{buildroot}%{_prefix}/lib
+mkdir -p %{buildroot}/lib/systemd/system/multi-user.target.wants
+mv %{buildroot}%{_libdir}/systemd/system/* %{buildroot}/lib/systemd/system
+rm -rf %{buildroot}%{_libdir}/systemd
+ln -s ../ckb-next-daemon.service %{buildroot}/lib/systemd/system/multi-user.target.wants/
+# No -devel package, so this is essentially useless
+rm -rf %{buildroot}%{_libdir}/cmake
