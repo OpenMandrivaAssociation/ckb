@@ -14,7 +14,7 @@ BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5Script)
 BuildRequires:	pkgconfig(Qt5Test)
 BuildRequires:	pkgconfig(quazip)
-BuildRequires:	qmake5
+BuildRequires:	qmake5 cmake ninja
 BuildRequires:	imagemagick
 # For ckb-mviz
 BuildRequires:	pkgconfig(libpulse) pkgconfig(libpulse-simple)
