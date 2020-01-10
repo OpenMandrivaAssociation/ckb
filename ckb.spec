@@ -49,7 +49,7 @@ UI for configuring Corsair gaming keyboards and mice
 
 %prep
 %setup -qn %{name}-next-master
-%apply_patches
+%autopatch -p1
 %cmake_qt5 -G Ninja
 
 %build
