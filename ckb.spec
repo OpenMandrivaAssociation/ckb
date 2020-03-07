@@ -1,21 +1,34 @@
-%define snapshot 20181123
+%define snapshot 20200307
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
-Version:	0.3.2
-Release:	0.%{snapshot}.1
+Version:	0.4.3
+Release:	%{?snapshot:0.%{snapshot}.}1
 Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
 Url:		https://github.com/ckb-next/ckb-next
-Source0:	https://github.com/ckb-next/ckb-next/archive/master.tar.gz
-BuildRequires:	pkgconfig(Qt5Core)
-BuildRequires:	pkgconfig(Qt5DBus)
-BuildRequires:	pkgconfig(Qt5Widgets)
-BuildRequires:	pkgconfig(Qt5Script)
-BuildRequires:	pkgconfig(Qt5Test)
+Source0:	https://github.com/ckb-next/ckb-next/archive/%{?snapshot:master}%{!?snapshot:v%{version}}/%{name}-%{?snapshot:%{snapshot}}%{!?snapshot:%{version}}.tar.gz
+Source1:	ckb-next.appdata.xml
+Source2:	ckb-next.1
+Source3:	99-ckb-next.preset
+Patch0:		ckb-next-0.4.2-fix-daemon.patch
+BuildRequires:	cmake(Qt5Core)
+BuildRequires:	cmake(Qt5DBus)
+BuildRequires:	cmake(Qt5Widgets)
+BuildRequires:	cmake(Qt5Script)
+BuildRequires:	cmake(Qt5Test)
 BuildRequires:	pkgconfig(quazip)
 BuildRequires:	qmake5 cmake ninja
 BuildRequires:	imagemagick
+BuildRequires:  pkgconfig(openssl)
+BuildRequires:  pkgconfig(gudev-1.0)
+BuildRequires:  pkgconfig(udev)
+BuildRequires:  pkgconfig(appindicator-0.1)
+BuildRequires:  pkgconfig(systemd)
+BuildRequires:  pkgconfig(zlib)
+BuildRequires:  desktop-file-utils
+BuildRequires:  appstream-util
+BuildRequires:  imagemagick
 # For ckb-mviz
 BuildRequires:	pkgconfig(libpulse) pkgconfig(libpulse-simple)
 
@@ -30,27 +43,35 @@ despite their extremely broken firmware.
 Summary:	UI for configuring Corsair gaming keyboards and mice
 Group:		Graphical desktop/KDE
 Requires:	%{name} = %{EVRD}
+%rename ckb-next
 
 %description ui
 UI for configuring Corsair gaming keyboards and mice
 
 %files
-%{_bindir}/ckb-next-daemon
+%{_libexecdir}/ckb-next-daemon
 /lib/systemd/system/*.service
 /lib/systemd/system/multi-user.target.wants/*.service
-%{_sysconfdir}/udev/rules.d/99-ckb-daemon.rules
 %{_bindir}/ckb-next-dev-detect
+/lib/systemd/system-preset/99-ckb-next.preset
+/lib/udev/rules.d/99-ckb-next-daemon.rules
+%{_mandir}/man1/ckb-next.1*
 
 %files ui
 %{_bindir}/ckb-next
 %{_prefix}/libexec/ckb-next-animations
 %{_datadir}/icons/hicolor/*/*/*.png
 %{_datadir}/applications/*.desktop
+%{_datadir}/metainfo/*.appdata.xml
 
 %prep
-%setup -qn %{name}-next-master
-%autopatch -p1
-%cmake_qt5 -G Ninja
+%autosetup -p0 -n %{name}-next-master
+%cmake_qt5 -G Ninja \
+	-DFORCE_INIT_SYSTEM=systemd \
+	-DSAFE_INSTALL=OFF \
+	-DSAFE_UNINSTALL=OFF \
+	-DDISABLE_UPDATER=1 \
+	-DUDEV_RULE_DIRECTORY=%{_udevrulesdir}
 
 %build
 %ninja_build -C build
@@ -58,14 +79,20 @@ UI for configuring Corsair gaming keyboards and mice
 %install
 %ninja_install -C build
 
+install -Dpm 0644 %{S:1} %{buildroot}%{_datadir}/metainfo/ckb-next.appdata.xml
+install -Dpm 0644 %{S:2} %{buildroot}%{_mandir}/man1/ckb-next.1
+install -Dpm 0644 %{S:3} %{buildroot}%{_presetdir}/99-ckb-next.preset
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/ckb-next.appdata.xml
+
 mkdir -p %{buildroot}%{_sbindir} %{buildroot}%{_bindir} %{buildroot}%{_prefix}/lib %{buildroot}%{_datadir}/applications %{buildroot}/lib/systemd/system/multi-user.target.wants
 for x in 128 64 32 24 22 16; do
 	mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps
 	convert %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/ckb-next.png -scale ${x}x${x} %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps/ckb-next.png
 done
 mkdir -p %{buildroot}/lib/systemd/system/multi-user.target.wants
-mv %{buildroot}%{_libdir}/systemd/system/* %{buildroot}/lib/systemd/system
-rm -rf %{buildroot}%{_libdir}/systemd
+mv %{buildroot}%{_prefix}/lib/systemd/system/* %{buildroot}/lib/systemd/system/
+rmdir %{buildroot}%{_prefix}/lib/systemd/system
+rmdir %{buildroot}%{_prefix}/lib/systemd
 ln -s ../ckb-next-daemon.service %{buildroot}/lib/systemd/system/multi-user.target.wants/
 # No -devel package, so this is essentially useless
 rm -rf %{buildroot}%{_libdir}/cmake
