@@ -18,7 +18,9 @@ BuildRequires:	cmake(Qt5Widgets)
 BuildRequires:	cmake(Qt5Script)
 BuildRequires:	cmake(Qt5Test)
 BuildRequires:	pkgconfig(quazip)
-BuildRequires:	qmake5 cmake ninja
+BuildRequires:	qmake5
+BuildRequires:	cmake
+BuildRequires:	ninja
 BuildRequires:	imagemagick
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(gudev-1.0)
@@ -30,7 +32,8 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  appstream-util
 BuildRequires:  imagemagick
 # For ckb-mviz
-BuildRequires:	pkgconfig(libpulse) pkgconfig(libpulse-simple)
+BuildRequires:	pkgconfig(libpulse)
+BuildRequires:	pkgconfig(libpulse-simple)
 
 %description
 Driver for Corsair gaming keyboards and mice.
