@@ -1,4 +1,5 @@
 %define snapshot 20200307
+
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
 Version:	0.4.3
@@ -28,6 +29,7 @@ BuildRequires:  pkgconfig(udev)
 BuildRequires:  pkgconfig(appindicator-0.1)
 BuildRequires:  pkgconfig(systemd)
 BuildRequires:  pkgconfig(zlib)
+BuildRequires:  pkgconfig(xcb-ewmh)
 BuildRequires:  desktop-file-utils
 BuildRequires:  appstream-util
 BuildRequires:  imagemagick
