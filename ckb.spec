@@ -19,6 +19,7 @@ BuildRequires:	cmake(Qt5Widgets)
 BuildRequires:	cmake(Qt5Script)
 BuildRequires:	cmake(Qt5Test)
 BuildRequires:	cmake(Qt5X11Extras)
+BuildRequires:	cmake(Qt5LinguistTools)
 BuildRequires:	pkgconfig(quazip)
 BuildRequires:	qmake5
 BuildRequires:	cmake
