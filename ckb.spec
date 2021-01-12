@@ -13,7 +13,7 @@ Source1:	ckb-next.appdata.xml
 Source2:	ckb-next.1
 Source3:	99-ckb-next.preset
 Patch0:		ckb-next-0.4.2-fix-daemon.patch
-Patch1:		ckb-next-0.4.2--missing-extern-qualifiers.patch
+#Patch1:		ckb-next-0.4.2--missing-extern-qualifiers.patch
 BuildRequires:	cmake(Qt5Core)
 BuildRequires:	cmake(Qt5DBus)
 BuildRequires:	cmake(Qt5Widgets)
