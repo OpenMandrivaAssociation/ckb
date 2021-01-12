@@ -1,19 +1,19 @@
-%define snapshot 20200307
+%define snapshot %{nil}
 
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
 Version:	0.4.3
-Release:	%{?snapshot:0.%{snapshot}.}1
+Release:	2
 Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
 Url:		https://github.com/ckb-next/ckb-next
-Source0:	https://github.com/ckb-next/ckb-next/archive/%{?snapshot:master}%{!?snapshot:v%{version}}/%{name}-%{?snapshot:%{snapshot}}%{!?snapshot:%{version}}.tar.gz
+Source0:	https://github.com/ckb-next/ckb-next/archive/%{name}-next/%{name}-next-%{version}.tar.gz
 Source1:	ckb-next.appdata.xml
 Source2:	ckb-next.1
 Source3:	99-ckb-next.preset
 Patch0:		ckb-next-0.4.2-fix-daemon.patch
-Patch1:		ckb-next-0.4.2--missing-extern-qualifiers.patch
+#Patch1:		ckb-next-0.4.2--missing-extern-qualifiers.patch
 BuildRequires:	cmake(Qt5Core)
 BuildRequires:	cmake(Qt5DBus)
 BuildRequires:	cmake(Qt5Widgets)
@@ -26,6 +26,7 @@ BuildRequires:	qmake5
 BuildRequires:	cmake
 BuildRequires:	ninja
 BuildRequires:	imagemagick
+BuildRequires:	pkgconfig(dbusmenu-qt5)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(gudev-1.0)
 BuildRequires:  pkgconfig(udev)
@@ -73,7 +74,7 @@ UI for configuring Corsair gaming keyboards and mice
 %{_datadir}/metainfo/*.appdata.xml
 
 %prep
-%autosetup -p0 -n %{name}-next-master
+%autosetup -p0 -n %{name}-next-%{version}
 %cmake_qt5 -G Ninja \
 	-DFORCE_INIT_SYSTEM=systemd \
 	-DSAFE_INSTALL=OFF \
