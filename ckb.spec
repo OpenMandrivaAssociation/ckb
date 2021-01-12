@@ -3,7 +3,7 @@
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
 Version:	0.4.3
-Release:	%{?snapshot:0.%{snapshot}.}2
+Release:	2
 Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
