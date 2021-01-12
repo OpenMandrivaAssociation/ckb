@@ -8,7 +8,7 @@ Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
 Url:		https://github.com/ckb-next/ckb-next
-Source0:	https://github.com/ckb-next/ckb-next/archive/%{?snapshot:master}%{!?snapshot:v%{version}}/%{name}-%{?snapshot:%{snapshot}}%{!?snapshot:%{version}}.tar.gz
+Source0:	https://github.com/ckb-next/ckb-next/archive/%{name}-{version}.tar.gz
 Source1:	ckb-next.appdata.xml
 Source2:	ckb-next.1
 Source3:	99-ckb-next.preset
@@ -73,7 +73,7 @@ UI for configuring Corsair gaming keyboards and mice
 %{_datadir}/metainfo/*.appdata.xml
 
 %prep
-%autosetup -p0 -n %{name}-next-master
+%autosetup -p0 -n %{name}-next-%{version}
 %cmake_qt5 -G Ninja \
 	-DFORCE_INIT_SYSTEM=systemd \
 	-DSAFE_INSTALL=OFF \
