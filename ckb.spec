@@ -26,6 +26,7 @@ BuildRequires:	qmake5
 BuildRequires:	cmake
 BuildRequires:	ninja
 BuildRequires:	imagemagick
+BuildRequires:	pkgconfig(dbusmenu-qt5)
 BuildRequires:  pkgconfig(openssl)
 BuildRequires:  pkgconfig(gudev-1.0)
 BuildRequires:  pkgconfig(udev)
