@@ -8,7 +8,7 @@ Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
 Url:		https://github.com/ckb-next/ckb-next
-Source0:	https://github.com/ckb-next/ckb-next/archive/%{name}-{version}.tar.gz
+Source0:	https://github.com/ckb-next/ckb-next/archive/%{name}-%{version}.tar.gz
 Source1:	ckb-next.appdata.xml
 Source2:	ckb-next.1
 Source3:	99-ckb-next.preset
