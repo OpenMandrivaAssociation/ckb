@@ -3,7 +3,7 @@
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
 Version:	0.4.4
-Release:	1
+Release:	2
 Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
@@ -21,7 +21,7 @@ BuildRequires:	cmake(Qt5Script)
 BuildRequires:	cmake(Qt5Test)
 BuildRequires:	cmake(Qt5X11Extras)
 BuildRequires:	cmake(Qt5LinguistTools)
-BuildRequires:	pkgconfig(quazip)
+BuildRequires:	cmake(QuaZip-Qt5)
 BuildRequires:	qmake5
 BuildRequires:	cmake
 BuildRequires:	ninja
