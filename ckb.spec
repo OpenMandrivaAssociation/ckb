@@ -3,7 +3,7 @@
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
 Version:	0.4.4
-Release:	2
+Release:	3
 Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
@@ -27,16 +27,16 @@ BuildRequires:	cmake
 BuildRequires:	ninja
 BuildRequires:	imagemagick
 BuildRequires:	pkgconfig(dbusmenu-qt5)
-BuildRequires:  pkgconfig(openssl)
-BuildRequires:  pkgconfig(gudev-1.0)
-BuildRequires:  pkgconfig(udev)
-BuildRequires:  pkgconfig(appindicator-0.1)
-BuildRequires:  pkgconfig(systemd)
-BuildRequires:  pkgconfig(zlib)
-BuildRequires:  pkgconfig(xcb-ewmh)
-BuildRequires:  desktop-file-utils
-BuildRequires:  appstream-util
-BuildRequires:  imagemagick
+BuildRequires:	pkgconfig(openssl)
+BuildRequires:	pkgconfig(gudev-1.0)
+BuildRequires:	pkgconfig(udev)
+BuildRequires:	pkgconfig(appindicator-0.1)
+BuildRequires:	pkgconfig(systemd)
+BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(xcb-ewmh)
+BuildRequires:	desktop-file-utils
+BuildRequires:	appstream-util
+BuildRequires:	imagemagick
 # For ckb-mviz
 BuildRequires:	pkgconfig(libpulse)
 BuildRequires:	pkgconfig(libpulse-simple)
@@ -59,12 +59,12 @@ UI for configuring Corsair gaming keyboards and mice
 
 %files
 %{_libexecdir}/ckb-next-daemon
-/lib/systemd/system/*.service
-/lib/systemd/system/multi-user.target.wants/*.service
+%{_unitdir}/*.service
+%{_systemd_util_dir}/multi-user.target.wants/*.service
 %{_bindir}/ckb-next-dev-detect
-/lib/systemd/system-preset/99-ckb-next.preset
-/lib/udev/rules.d/99-ckb-next-daemon.rules
-%{_mandir}/man1/ckb-next.1*
+%{_presetdir}/99-ckb-next.preset
+%{_udevrulesdir}/99-ckb-next-daemon.rules
+%doc %{_mandir}/man1/ckb-next.1*
 
 %files ui
 %{_bindir}/ckb-next
@@ -93,15 +93,11 @@ install -Dpm 0644 %{S:2} %{buildroot}%{_mandir}/man1/ckb-next.1
 install -Dpm 0644 %{S:3} %{buildroot}%{_presetdir}/99-ckb-next.preset
 appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/ckb-next.appdata.xml
 
-mkdir -p %{buildroot}%{_sbindir} %{buildroot}%{_bindir} %{buildroot}%{_prefix}/lib %{buildroot}%{_datadir}/applications %{buildroot}/lib/systemd/system/multi-user.target.wants
 for x in 128 64 32 24 22 16; do
-	mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps
-	convert %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/ckb-next.png -scale ${x}x${x} %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps/ckb-next.png
+    mkdir -p %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps
+    convert %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/ckb-next.png -scale ${x}x${x} %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps/ckb-next.png
 done
-mkdir -p %{buildroot}/lib/systemd/system/multi-user.target.wants
-mv %{buildroot}%{_prefix}/lib/systemd/system/* %{buildroot}/lib/systemd/system/
-rmdir %{buildroot}%{_prefix}/lib/systemd/system
-rmdir %{buildroot}%{_prefix}/lib/systemd
-ln -s ../ckb-next-daemon.service %{buildroot}/lib/systemd/system/multi-user.target.wants/
+
+ln -s ../ckb-next-daemon.service %{buildroot}%{_systemd_util_dir}/multi-user.target.wants/
 # No -devel package, so this is essentially useless
 rm -rf %{buildroot}%{_libdir}/cmake
