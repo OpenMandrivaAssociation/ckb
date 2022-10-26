@@ -2,13 +2,13 @@
 
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
-Version:	0.4.4
-Release:	3
+Version:	0.5.0
+Release:	1
 Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
 Url:		https://github.com/ckb-next/ckb-next
-Source0:	https://github.com/ckb-next/ckb-next/archive/%{name}-next/%{name}-next-%{version}.tar.gz
+Source0:	https://github.com/ckb-next/ckb-next/archive/refs/tags/v%{version}.tar.gz
 Source1:	ckb-next.appdata.xml
 Source2:	ckb-next.1
 Source3:	99-ckb-next.preset
@@ -80,6 +80,8 @@ UI for configuring Corsair gaming keyboards and mice
 	-DSAFE_INSTALL=OFF \
 	-DSAFE_UNINSTALL=OFF \
 	-DDISABLE_UPDATER=1 \
+	-DQuaZip_LIBRARIES="quazip1-qt5" \
+	-DQuaZip_INCLUDE_DIR="$(ls -d %{_includedir}/QuaZip-Qt5-*/quazip)" \
 	-DUDEV_RULE_DIRECTORY=%{_udevrulesdir}
 
 %build
@@ -98,6 +100,7 @@ for x in 128 64 32 24 22 16; do
     convert %{buildroot}%{_datadir}/icons/hicolor/512x512/apps/ckb-next.png -scale ${x}x${x} %{buildroot}%{_datadir}/icons/hicolor/${x}x${x}/apps/ckb-next.png
 done
 
+mkdir -p %{buildroot}%{_systemd_util_dir}/multi-user.target.wants/
 ln -s ../ckb-next-daemon.service %{buildroot}%{_systemd_util_dir}/multi-user.target.wants/
 # No -devel package, so this is essentially useless
 rm -rf %{buildroot}%{_libdir}/cmake
