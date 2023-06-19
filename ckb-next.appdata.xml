@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application>
+<component type="desktop-application">
 <id type="desktop">ckb-next.desktop</id>
 <name>ckb-next</name>
 <summary>Corsair RGB keyboard driver</summary>
@@ -21,4 +21,4 @@ https://camo.githubusercontent.com/8c6239eb67eb172baa34864f4759b111b2c731f7/6874
 </screenshots>
 <url type="homepage">https://github.com/ckb-next/ckb-next</url>
 <updatecontact>bero@lindev.ch</updatecontact>
-</application>
+</component>
