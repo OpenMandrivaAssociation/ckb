@@ -2,13 +2,13 @@
 
 Summary:	Driver for Corsair gaming keyboards and mice
 Name:		ckb
-Version:	0.5.0
-Release:	2
+Version:	0.6.0
+Release:	1
 Epoch:		1
 Group:		Graphical desktop/KDE
 License:	GPLv2 LGPLv2 GFDL
 Url:		https://github.com/ckb-next/ckb-next
-Source0:	https://github.com/ckb-next/ckb-next/archive/refs/tags/v%{version}.tar.gz
+Source0:	https://github.com/ckb-next/ckb-next/archive/refs/tags/v%{version}/ckb-next-%{version}.tar.gz
 Source1:	ckb-next.appdata.xml
 Source2:	ckb-next.1
 Source3:	99-ckb-next.preset
@@ -59,6 +59,7 @@ UI for configuring Corsair gaming keyboards and mice
 
 %files
 %{_libexecdir}/ckb-next-daemon
+%{_libexecdir}/ckb-next-sinfo
 %{_unitdir}/*.service
 %{_systemd_util_dir}/multi-user.target.wants/*.service
 %{_bindir}/ckb-next-dev-detect
