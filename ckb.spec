@@ -59,6 +59,7 @@ UI for configuring Corsair gaming keyboards and mice
 
 %files
 %{_libexecdir}/ckb-next-daemon
+%{_libexecdir}/ckb-next-sinfo
 %{_unitdir}/*.service
 %{_systemd_util_dir}/multi-user.target.wants/*.service
 %{_bindir}/ckb-next-dev-detect
