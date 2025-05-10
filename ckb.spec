@@ -17,7 +17,9 @@ Patch0:		ckb-next-0.6.2-cmakelist-qt6.patch
 
 BuildRequires:	cmake
 BuildRequires:	ninja
+BuildRequires:	git
 BuildRequires:	cmake(Qt6Core)
+BuildRequires:	cmake(Qt6Core5Compat)
 BuildRequires:	cmake(Qt6DBus)
 BuildRequires:	cmake(Qt6Gui)
 BuildRequires:	cmake(Qt6LinguistTools)
@@ -25,6 +27,7 @@ BuildRequires:	cmake(Qt6Network)
 BuildRequires:	cmake(Qt6OpenGLWidgets)
 BuildRequires:	cmake(Qt6Widgets)
 BuildRequires:	cmake(QuaZip-Qt6)
+BuildRequires:	cmake(VulkanHeaders)
 BuildRequires:	appstream-util
 BuildRequires:	desktop-file-utils
 BuildRequires:	imagemagick
@@ -41,6 +44,7 @@ BuildRequires:	pkgconfig(xcb)
 BuildRequires:	pkgconfig(xcb-ewmh)
 BuildRequires:	pkgconfig(xcb-screensaver)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	qt6-qtbase-theme-gtk3
 BuildRequires:	systemd-rpm-macros
 
 # In prior packaged versions the ui component was a separate package.
